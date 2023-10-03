@@ -1,72 +1,92 @@
-import React, { useState } from 'react';
+import React, { useState, Component } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { SessionContext, SessionProvider } from './SessionContext';
 
-export default function LoginScreen() {
-  const navigation = useNavigation();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const navigateToSignUp = () => {
+export default class LoginScreen extends Component {
+  static contextType = SessionContext
+  navigateToSignUp = () => {
+    const { navigation } = this.props
     navigation.navigate('SignUp'); // Navigate to SignUpScreen
   };
 
-  const navigateToForgotPassword = () => {
+  navigateToForgotPassword = () => {
+    const { navigation } = this.props
     navigation.navigate('ForgotPassword'); // Navigate to ForgotPasswordScreen
   };
 
-  const handleLogin = () => {
+  handleLogin = () => {
     // Check the provided email and password
     // If login is successful, you can navigate to the user's dashboard or home screen
     // Otherwise, provide feedback to the user
+    const { email, password } = this.state
     if (email && password) {
-      alert(`Logged in with email: ${email}`);
       // Navigate to the user's dashboard or home screen
+      this.context.login(email, password)
+      .then(() => {
+        // success
+        alert("Login success")
+        console.log(`access token: ${this.context.apiSession.sessionToken}`)
+      })
+      .catch(err => {
+        console.log(err)
+      })
     } else {
       alert('Please enter a valid email and password.');
     }
   };
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Welcome to RitePay</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
-      <View style={styles.buttonSpacing}>
-        <Button
-          title="Log In"
-          onPress={handleLogin}
-          style={styles.button} // Set a fixed height for the button
+  constructor(props) {
+    super(props)
+    this.state = {
+      email: "",
+      password: ""
+    }
+  }
+
+  render() {
+    const { sessionManager } = this.props;
+
+    return (
+      <View style={styles.container}>
+        <Text style={styles.header}>Welcome to RitePay</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          value={this.state.email}
+          onChangeText={text => { this.setState({ email: text }) }}
+          keyboardType="email-address"
         />
-      </View>
-      <View style={styles.buttonSpacing}>
-        <Button
-          title="Sign Up"
-          onPress={navigateToSignUp}
-          style={styles.button}
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          secureTextEntry
+          value={this.state.password}
+          onChangeText={text => { this.setState({ password: text }) }}
         />
+        <View style={styles.buttonSpacing}>
+          <Button
+            title="Log In"
+            onPress={this.handleLogin}
+            style={styles.button} // Set a fixed height for the button
+          />
+        </View>
+        <View style={styles.buttonSpacing}>
+          <Button
+            title="Sign Up"
+            onPress={this.navigateToSignUp}
+            style={styles.button}
+          />
+        </View>
+        <View style={styles.buttonSpacing}>
+          <Button
+            title="Forgot Password"
+            onPress={this.navigateToForgotPassword}
+            style={styles.button}
+          />
+        </View>
       </View>
-      <View style={styles.buttonSpacing}>
-        <Button
-          title="Forgot Password"
-          onPress={navigateToForgotPassword}
-          style={styles.button}
-        />
-      </View>
-    </View>
-  );
+    );
+  }
 }
 
 const styles = StyleSheet.create({
