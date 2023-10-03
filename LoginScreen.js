@@ -1,5 +1,5 @@
 import React, { useState, Component } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { SessionContext, SessionProvider } from './SessionContext';
 
 export default class LoginScreen extends Component {
@@ -28,7 +28,9 @@ export default class LoginScreen extends Component {
         console.log(`access token: ${this.context.apiSession.sessionToken}`)
       })
       .catch(err => {
-        console.log(err)
+        Alert.alert("Error Signing In", err.message ?? "Unknown error", [
+          { text: "OK", style: "cancel" }
+        ])
       })
     } else {
       alert('Please enter a valid email and password.');
