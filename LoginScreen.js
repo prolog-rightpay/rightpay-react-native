@@ -15,6 +15,11 @@ export default function LoginScreen() {
     navigation.navigate('ForgotPassword'); // Navigate to ForgotPasswordScreen
   };
 
+  const navigateToWalletScreen = () => {
+    navigation.navigate('Wallet'); // Navigate to the Wallet screen
+  };
+  
+
   const handleLogin = () => {
     // Check the provided email and password
     // If login is successful, you can navigate to the user's dashboard or home screen
@@ -65,7 +70,14 @@ export default function LoginScreen() {
           style={styles.button}
         />
       </View>
-    </View>
+<View style={styles.buttonSpacing}>
+  <Button
+    title="Go to Wallet"
+    onPress={navigateToWalletScreen} // Call the navigateToWalletScreen function
+    style={styles.button}
+  />
+</View>
+</View>
   );
 }
 
