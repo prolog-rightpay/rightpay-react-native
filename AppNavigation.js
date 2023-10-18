@@ -5,7 +5,6 @@ import ForgotPasswordScreen from './ForgotPasswordScreen';
 import LoginScreen from './LoginScreen';
 import WalletScreen from './WalletScreen';
 
-
 const Stack = createStackNavigator();
 
 function AppNavigation() {
