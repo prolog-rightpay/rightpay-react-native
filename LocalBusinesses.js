@@ -10,7 +10,7 @@ const LocalBusinesses = ({ apiKey }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=37.7749,-122.4194&radius=5000&type=restaurant&key=${apiKey}`
+          `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=41.1333,-73.7924&radius=5000&type=restaurant&key=${apiKey}`
         );
         setBusinesses(response.data.results);
       } catch (error) {

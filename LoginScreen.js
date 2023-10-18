@@ -20,6 +20,11 @@ export default class LoginScreen extends Component {
     navigation.navigate('Wallet'); // Navigate to the Wallet screen
   };
 
+  navigateToMapView = () => {
+    const { navigation } = this.props;
+    navigation.navigate('Map'); // Navigate to the Wallet screen
+  };
+
   handleLogin = () => {
     // Check the provided email and password
     // If login is successful, you can navigate to the user's dashboard or home screen
@@ -92,8 +97,15 @@ export default class LoginScreen extends Component {
         </View>
         <View style={styles.buttonSpacing}>
           <Button
-            title="Go to Wallet"
+            title="Go to Wallet (debug)"
             onPress={this.navigateToWalletScreen}
+            style={styles.button}
+          />
+        </View>
+        <View style={styles.buttonSpacing}>
+          <Button
+            title="Go to Map (debug)"
+            onPress={this.navigateToMapView}
             style={styles.button}
           />
         </View>

@@ -6,8 +6,8 @@ import LocalBusinesses from './LocalBusinesses';
 
 const MapComponent = () => {
   const initialRegion = {
-    latitude: 37.7749,
-    longitude: -122.4194,
+    latitude: 41.1333,
+    longitude: -73.7924,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   };
