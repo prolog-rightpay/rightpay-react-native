@@ -7,22 +7,28 @@ export class SessionProvider extends Component {
         super(props)
 
         this.state = {
-            apiSession: null,
+            apiSession: new RightPayAPISession(),
             account: null
         }
     }
 
-    login = async (email, password) => {
-        const apiSession = new RightPayAPISession()
-        await apiSession.login(email, password)
+    signin = async (email, password) => {
+        const { apiSession } = this.state
+        await apiSession.signin(email, password)
         this.setState({ apiSession })
         const account = await apiSession.getAccount()
         this.setState({ account })
     }
 
-    logout = async () => {
-        await apiSession.logout()
-        this.setState({ apiSession: null, account: null })
+    signup = async (email, password, firstName, lastName) => {
+        const { apiSession } = this.state
+        await apiSession.signup(email, password, firstName, lastName)
+    }
+
+    signout = async () => {
+        const { apiSession } = this.state
+        await apiSession.signout()
+        this.setState({ apiSession: new RightPayAPISession(), account: null })
     }
 
     render() {
@@ -31,9 +37,10 @@ export class SessionProvider extends Component {
             <SessionContext.Provider
                 value={{
                     apiSession: this.state.apiSession,
-                    user: this.state.user,
-                    login: this.login,
-                    logout: this.logout
+                    account: this.state.account,
+                    signin: this.signin,
+                    signup: this.signup,
+                    signout: this.signout
                 }}
             >
                 {children}

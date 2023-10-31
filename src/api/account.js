@@ -27,7 +27,30 @@ export class RightPayAPISession {
         this.sessionToken = null
     }
 
-    async login(email, password) {
+    async signup(email, password, firstName, lastName) {
+        let res
+        try {
+            res = await axios.post(endpoint + '/signup', {
+                first_name: firstName,
+                last_name: lastName,
+                email: email,
+                password: password
+            })
+        } catch (err) {
+            const message = err.response.data?.message
+            if (message) {
+                throw new RightPayAPIError(message)
+            } else {
+                throw err
+            }
+        }
+        const { data } = res
+        if (!data.success) {
+            throw new RightPayAPIError(data.message)
+        }
+    }
+
+    async signin(email, password) {
         let res
         try {
             res = await axios.post(endpoint + '/signin', {
@@ -50,7 +73,7 @@ export class RightPayAPISession {
         }
     }
 
-    async logout() {
+    async signout() {
         // logout
     }
 

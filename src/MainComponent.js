@@ -10,7 +10,7 @@ const MainComponent = () => {
 
   return (
     <View style={{ flex: 1 }}>
-    {context.session?.account != undefined ? (
+    {context.account != undefined ? (
         <AppNavigation />
     ) : (
         <NoLoginAppNavigation />

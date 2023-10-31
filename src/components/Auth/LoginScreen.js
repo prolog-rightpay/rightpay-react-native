@@ -22,12 +22,7 @@ export default class LoginScreen extends Component {
     const { email, password } = this.state;
     if (email && password) {
       // Navigate to the user's dashboard or home screen
-      this.context.login(email, password)
-        .then(() => {
-          // success
-          alert("Login success");
-          console.log(`access token: ${this.context.apiSession.sessionToken}`);
-        })
+      this.context.signin(email, password)
         .catch(err => {
           Alert.alert("Error Signing In", err.message ?? "Unknown error", [
             { text: "OK", style: "cancel" }
