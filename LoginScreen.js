@@ -15,16 +15,6 @@ export default class LoginScreen extends Component {
     navigation.navigate('ForgotPassword'); // Navigate to ForgotPasswordScreen
   };
 
-  navigateToWalletScreen = () => {
-    const { navigation } = this.props;
-    navigation.navigate('Wallet'); // Navigate to the Wallet screen
-  };
-
-  navigateToMapView = () => {
-    const { navigation } = this.props;
-    navigation.navigate('Map'); // Navigate to the Wallet screen
-  };
-
   handleLogin = () => {
     // Check the provided email and password
     // If login is successful, you can navigate to the user's dashboard or home screen
@@ -63,6 +53,8 @@ export default class LoginScreen extends Component {
         <TextInput
           style={styles.input}
           placeholder="Email"
+          autoCorrect={false}
+          autoCapitalize="none"
           value={this.state.email}
           onChangeText={text => { this.setState({ email: text }) }}
           keyboardType="email-address"
@@ -71,6 +63,8 @@ export default class LoginScreen extends Component {
           style={styles.input}
           placeholder="Password"
           secureTextEntry
+          autoCorrect={false}
+          autoCapitalize="none"
           value={this.state.password}
           onChangeText={text => { this.setState({ password: text }) }}
         />
@@ -92,20 +86,6 @@ export default class LoginScreen extends Component {
           <Button
             title="Forgot Password"
             onPress={this.navigateToForgotPassword}
-            style={styles.button}
-          />
-        </View>
-        <View style={styles.buttonSpacing}>
-          <Button
-            title="Go to Wallet (debug)"
-            onPress={this.navigateToWalletScreen}
-            style={styles.button}
-          />
-        </View>
-        <View style={styles.buttonSpacing}>
-          <Button
-            title="Go to Map (debug)"
-            onPress={this.navigateToMapView}
             style={styles.button}
           />
         </View>

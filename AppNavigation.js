@@ -1,24 +1,20 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import SignUpScreen from './SignUpScreen';
-import ForgotPasswordScreen from './ForgotPasswordScreen';
-import LoginScreen from './LoginScreen';
+import { NavigationContainer } from '@react-navigation/native'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
 import WalletScreen from './WalletScreen';
 import MapView from './MapView';
 
-const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator()
 
 function AppNavigation() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="SignUp" component={SignUpScreen} />
-      <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-      <Stack.Screen name="Wallet" component={WalletScreen} />
-      <Stack.Screen name="Map" component={MapView} />
-
-      {/* Add other screens */}
-    </Stack.Navigator>
+    <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen name="Wallet" component={WalletScreen} />
+        <Tab.Screen name="Map" component={MapView} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
 

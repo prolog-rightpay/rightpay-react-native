@@ -18,6 +18,8 @@ function SignUpScreen() {
       <TextInput
         style={styles.input}
         placeholder="Email"
+        autoCorrect={false}
+        autoCapitalize="none"
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
@@ -25,6 +27,8 @@ function SignUpScreen() {
       <TextInput
         style={styles.input}
         placeholder="Password"
+        autoCorrect={false}
+        autoCapitalize="none"
         secureTextEntry
         value={password}
         onChangeText={setPassword}

@@ -1,13 +1,14 @@
 // App.js
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import AppNavigation from './AppNavigation'; // Your main navigation component
+import React, { useContext } from 'react';
+import { View } from 'react-native';
+import { SessionProvider } from './SessionContext';
+import MainComponent from './MainComponent';
 
-export default function App() {
-
+const App = () => {
   return (
-    <NavigationContainer>
-      <AppNavigation />
-    </NavigationContainer>
+    <SessionProvider>
+      <MainComponent />
+    </SessionProvider>
   );
-}
+};
+export default App;

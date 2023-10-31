@@ -19,6 +19,8 @@ function ForgotPasswordScreen() {
       <TextInput
         style={styles.input}
         placeholder="Email"
+        autoCorrect={false}
+        autoCapitalize="none"
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address" // Show the email keyboard
