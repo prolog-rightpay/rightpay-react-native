@@ -1,5 +1,6 @@
 import React, { Component, createContext, useState, useContext } from 'react';
 import { RightPayAPISession } from './api/account'
+import { setupDatabase } from './db/setup';
 
 export const SessionContext = createContext();
 export class SessionProvider extends Component {
@@ -8,15 +9,19 @@ export class SessionProvider extends Component {
 
         this.state = {
             apiSession: new RightPayAPISession(),
-            account: null
+            account: null,
+            /** Has checked storage for session token? */
+            databaseSetup: false
         }
     }
 
     signin = async (email, password) => {
         const { apiSession } = this.state
         await apiSession.signin(email, password)
-        this.setState({ apiSession })
         const account = await apiSession.getAccount()
+
+        // AsyncStorage.setItem('sessionToken', apiSession.sessionToken)
+        this.setState({ apiSession })
         this.setState({ account })
     }
 
@@ -40,7 +45,8 @@ export class SessionProvider extends Component {
                     account: this.state.account,
                     signin: this.signin,
                     signup: this.signup,
-                    signout: this.signout
+                    signout: this.signout,
+                    databaseSetup: this.state.databaseSetup
                 }}
             >
                 {children}

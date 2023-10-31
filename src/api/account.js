@@ -83,9 +83,27 @@ export class RightPayAPISession {
      * @throws `RightPayAPIError`, use `.message` for a user-facing error.
      */
     async getAccount() {
-        if (this.sessionToken == null) {
-            throw new RightPayAPIError("Missing session token")
+        let res
+        try {
+            res = await axios.get(endpoint + '/account', {
+                headers: {
+                    "Authorization": "Bearer " + this.sessionToken
+                }
+            })
+        } catch (err) {
+            throw err
         }
-        return "placeholder"
+        const { data } = res
+        if (data.success) {
+            const account = new Account()
+            account.id = data.data.account.id
+            account.email = data.data.account.email
+            account.firstName = data.data.account.first_name
+            account.lastName = data.data.account.last_name
+            account.dateCreated = data.data.account.date_created
+            return account
+        } else {
+            throw new RightPayAPIError(data.message)
+        }
     }
 }
