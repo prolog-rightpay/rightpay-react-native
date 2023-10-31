@@ -4,20 +4,10 @@ import Realm from 'realm';
 import { createRealmContext } from '@realm/react';
 import { SessionProvider } from './src/SessionContext';
 import MainComponent from './src/MainComponent';
-
-class Account extends Realm.Object {
-  static schema = {
-    name: "Account",
-    properties: {
-      _id: "objectId",
-      name: "string"
-    },
-    primaryKey: "_id",
-  }
-}
+import RealmAccount from './src/db/schema/Account';
 
 const realmConfig = {
-  schema: [Account],
+  schema: [RealmAccount],
 }
 
 const {RealmProvider, useRealm, useObject, useQuery} = createRealmContext(realmConfig);
