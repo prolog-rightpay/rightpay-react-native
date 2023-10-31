@@ -49,7 +49,7 @@ export default class LoginScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>Welcome to RitePay</Text>
+        <Text style={styles.header}>Welcome to RightPay</Text>
         <TextInput
           style={styles.input}
           placeholder="Email"

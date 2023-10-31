@@ -15,14 +15,14 @@ export class Account {
     dateCreated = null
 }
 
-export class RitepayAPIError extends Error {
+export class RightPayAPIError extends Error {
     constructor(message) {
         super(message)
-        this.name = "RitepayAPIError"
+        this.name = "RightPayAPIError"
     }
 }
 
-export class RitepayAPISession {
+export class RightPayAPISession {
     constructor() {
         this.sessionToken = null
     }
@@ -37,7 +37,7 @@ export class RitepayAPISession {
         } catch (err) {
             const message = err.response.data?.message
             if (message) {
-                throw new RitepayAPIError(message)
+                throw new RightPayAPIError(message)
             } else {
                 throw err
             }
@@ -46,7 +46,7 @@ export class RitepayAPISession {
         if (data.success) {
             this.sessionToken = data.data.session_token
         } else {
-            throw new RitepayAPIError(data.message)
+            throw new RightPayAPIError(data.message)
         }
     }
 
@@ -57,11 +57,11 @@ export class RitepayAPISession {
     /**
      * Get the account of the session.
      * @returns {Account}
-     * @throws `RitepayAPIError`, use `.message` for a user-facing error.
+     * @throws `RightPayAPIError`, use `.message` for a user-facing error.
      */
     async getAccount() {
         if (this.sessionToken == null) {
-            throw new RitepayAPIError("Missing session token")
+            throw new RightPayAPIError("Missing session token")
         }
         return "placeholder"
     }

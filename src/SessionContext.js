@@ -1,5 +1,5 @@
 import React, { Component, createContext, useState, useContext } from 'react';
-import { RitepayAPISession } from './api/account'
+import { RightPayAPISession } from './api/account'
 
 export const SessionContext = createContext();
 export class SessionProvider extends Component {
@@ -13,7 +13,7 @@ export class SessionProvider extends Component {
     }
 
     login = async (email, password) => {
-        const apiSession = new RitepayAPISession()
+        const apiSession = new RightPayAPISession()
         await apiSession.login(email, password)
         this.setState({ apiSession })
         const account = await apiSession.getAccount()
