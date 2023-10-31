@@ -1,6 +1,6 @@
 import { useRealm } from '@realm/react';
 import React, { Component, createContext, useState, useContext } from 'react';
-import { RightPayAPISession } from './api/account'
+import { Account, RightPayAPISession } from './api/account'
 
 export const SessionContext = createContext();
 export class SessionProvider extends Component {
@@ -38,6 +38,12 @@ export class SessionProvider extends Component {
         this.setState({ account })
     }
 
+    forceSignin = () => {
+        const account = new Account()
+        account.email = "x@x.com"
+        this.setState({ account })
+    }
+
     signup = async (email, password, firstName, lastName) => {
         const { apiSession } = this.state
         await apiSession.signup(email, password, firstName, lastName)
@@ -59,6 +65,7 @@ export class SessionProvider extends Component {
                     signin: this.signin,
                     signup: this.signup,
                     signout: this.signout,
+                    forceSignin: this.forceSignin,
                     databaseSetup: this.state.databaseSetup
                 }}
             >

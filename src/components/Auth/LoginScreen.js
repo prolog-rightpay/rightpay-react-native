@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { Account } from '../../api/account';
 import { SessionContext } from '../../SessionContext';
 
 export default class LoginScreen extends Component {
@@ -31,6 +32,10 @@ export default class LoginScreen extends Component {
     } else {
       alert('Please enter a valid email and password.');
     }
+  };
+
+  forceLogIn = () => {
+    this.context.forceSignin()
   };
 
   constructor(props) {
@@ -81,6 +86,13 @@ export default class LoginScreen extends Component {
           <Button
             title="Forgot Password"
             onPress={this.navigateToForgotPassword}
+            style={styles.button}
+          />
+        </View>
+        <View style={styles.buttonSpacing}>
+          <Button
+            title="Force Log In"
+            onPress={this.forceLogIn}
             style={styles.button}
           />
         </View>
