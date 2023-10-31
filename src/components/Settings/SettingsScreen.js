@@ -55,6 +55,7 @@ const SettingsScreen = () => {
                 keyExtractor={section => section.title}
                 renderItem={renderItem}
                 renderSectionHeader={renderSectionHeader}
+                stickySectionHeadersEnabled={false}
             />
         </View>
     )

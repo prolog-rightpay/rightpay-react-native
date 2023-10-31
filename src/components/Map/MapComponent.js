@@ -12,18 +12,16 @@ const MapComponent = () => {
     longitudeDelta: 0.0421,
   };
 
-  const apiKey = 'AIzaSyB64gdwrAFao31Q3XyNETWBqFrgSKwOSHg';
-
   return (
     <View style={styles.container}>
       <MapView
         style={styles.map}
         initialRegion={initialRegion}
         showsUserLocation={true}
+        mapPadding={{ top: 0, left: 0, bottom: 20, right: 0 }}
       >
         {/* You can add markers or other map features here */}
       </MapView>
-      <LocalBusinesses apiKey={apiKey} />
     </View>
   );
 };
