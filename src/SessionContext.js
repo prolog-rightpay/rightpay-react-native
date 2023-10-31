@@ -1,5 +1,5 @@
 import React, { Component, createContext, useState, useContext } from 'react';
-import { RitepayAPISession } from './src/api/account'
+import { RitepayAPISession } from './api/account'
 
 export const SessionContext = createContext();
 export class SessionProvider extends Component {

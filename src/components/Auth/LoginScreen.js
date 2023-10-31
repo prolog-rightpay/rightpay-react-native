@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
-import { SessionContext } from './SessionContext';
+import { SessionContext } from '../../SessionContext';
 
 export default class LoginScreen extends Component {
   static contextType = SessionContext;

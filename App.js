@@ -1,8 +1,7 @@
 // App.js
 import React, { useContext } from 'react';
-import { View } from 'react-native';
-import { SessionProvider } from './SessionContext';
-import MainComponent from './MainComponent';
+import { SessionProvider } from './src/SessionContext';
+import MainComponent from './src/MainComponent';
 
 const App = () => {
   return (

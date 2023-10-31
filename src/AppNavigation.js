@@ -2,8 +2,8 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import WalletScreen from './WalletScreen';
-import MapView from './MapView';
+import WalletScreen from './components/Wallet/WalletScreen';
+import MapView from './components/Map/MapView';
 
 const Tab = createBottomTabNavigator()
 
