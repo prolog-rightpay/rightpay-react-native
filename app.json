@@ -15,18 +15,24 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.rightpay.rightpay"
+      "buildNumber": "2",
+      "supportsTablet": false,
+      "bundleIdentifier": "com.userightpay.rightpay"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.rightpay.rightpay"
+      "package": "com.userightpay.rightpay"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "bfd0b375-da22-4c69-ba10-05caecb1fd7b"
+      }
     }
   }
 }

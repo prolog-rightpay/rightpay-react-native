@@ -81,9 +81,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace 'com.rightpay.rightpay'
+    namespace 'com.userightpay.rightpay'
     defaultConfig {
-        applicationId 'com.rightpay.rightpay'
+        applicationId 'com.userightpay.rightpay'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

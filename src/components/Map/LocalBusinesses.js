@@ -102,10 +102,6 @@ const LocalBusinesses = ({ apiKey }) => {
       }
   }
 
-      /* {businesses.map((business) => (
-      <Text key={business.place_id}>{business.name}</Text>
-    ))} */
-
   return (
     <FlatList
           style={styles.sectionList}

@@ -1,4 +1,4 @@
-package com.rightpay.rightpay;
+package com.userightpay.rightpay;
 
 import android.os.Build;
 import android.os.Bundle;

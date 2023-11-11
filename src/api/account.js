@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const endpoint = 'http://localhost:3000/api/v1'
+const endpoint = 'https://api.userightpay.com/api/v1'
 
 export class Account {
     /** @type {string} Internal ID of account. */
