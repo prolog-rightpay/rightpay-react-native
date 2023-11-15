@@ -1,6 +1,6 @@
 import { useRealm } from '@realm/react';
 import React, { Component, createContext, useState, useContext } from 'react';
-import { Account, RightPayAPISession } from './api/account'
+import { Account, RightPayAPISession } from './api/session'
 
 export const SessionContext = createContext();
 export class SessionProvider extends Component {

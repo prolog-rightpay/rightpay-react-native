@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-const endpoint = 'https://api.userightpay.com/api/v1'
+export const endpoint = 'https://api.userightpay.com/api/v1'
+// export const endpoint = 'http://localhost:3000/api/v1'
 
 export class Account {
     /** @type {string} Internal ID of account. */
@@ -106,4 +107,5 @@ export class RightPayAPISession {
             throw new RightPayAPIError(data.message)
         }
     }
+
 }

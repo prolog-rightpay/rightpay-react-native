@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
-import { Account } from '../../api/account';
+import { Account } from '../../api/session';
 import { SessionContext } from '../../SessionContext';
 
 export default class LoginScreen extends Component {
