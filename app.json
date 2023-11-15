@@ -15,7 +15,7 @@
       "**/*"
     ],
     "ios": {
-      "buildNumber": "2",
+      "buildNumber": "3",
       "supportsTablet": false,
       "bundleIdentifier": "com.userightpay.rightpay"
     },
