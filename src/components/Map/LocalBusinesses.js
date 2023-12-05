@@ -5,7 +5,7 @@ import axios from 'axios';
 import { BusinessItem } from './BusinessItem';
 import { haversineDistance } from '../../math/distance';
 
-const LocalBusinesses = ({ apiKey }) => {
+const LocalBusinesses = ({ apiKey, onBusinessPress }) => {
   const [businesses, setBusinesses] = useState([]);
 
   const userLat = 41.1333
@@ -90,7 +90,7 @@ const LocalBusinesses = ({ apiKey }) => {
     } else {
       distance = `${item.miles.toFixed(2)} mi`
     }
-    return (<BusinessItem name={item.name} type={type} distance={distance} rewards={item.rewards} />)
+    return (<BusinessItem name={item.name} type={type} distance={distance} rewards={item.rewards} onPress={() => onBusinessPress(item)} />)
   }
 
   const renderText = item => {

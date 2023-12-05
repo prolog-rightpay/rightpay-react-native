@@ -3,13 +3,18 @@ import { SafeAreaView, View, Text, Button, FlatList, Modal, TextInput, StyleShee
 import LocalBusinesses from './LocalBusinesses';
 import MapComponent from './MapComponent';
 
-const MapScreen = () => {
+const MapScreen = ({ navigation }) => {
 
   const apiKey = 'AIzaSyB64gdwrAFao31Q3XyNETWBqFrgSKwOSHg';
 
   const refreshButtonOnPress = () => {
 
   }
+
+  const onBusinessPress = business => {
+    console.log("navigating")
+    navigation.navigate('Rewards', { data: { business: business } })
+}
 
   return (
     <View style={styles.root}>
@@ -34,7 +39,7 @@ const MapScreen = () => {
             <View style={styles.separator}></View>
           </View>
 
-          <LocalBusinesses apiKey={apiKey} />
+          <LocalBusinesses apiKey={apiKey} onBusinessPress={onBusinessPress} />
         </View>
     </View>
   );

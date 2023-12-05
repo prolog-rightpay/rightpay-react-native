@@ -1,10 +1,10 @@
 import React from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 
-export const BusinessItem = ({ name, type, distance, rewards }) => {
+export const BusinessItem = ({ name, type, distance, rewards, onPress }) => {
     return (
         <View>
-            <TouchableOpacity style={styles.container}>
+            <TouchableOpacity style={styles.container} onPress={onPress}>
                 <View style={styles.textContainer}>
                     <Text style={{ fontSize: 16, fontWeight: "bold" }}>{name}</Text>
                     <View style={styles.infoContainer}>
