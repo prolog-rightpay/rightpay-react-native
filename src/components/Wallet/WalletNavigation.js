@@ -15,12 +15,14 @@ const WalletNavigation = () => {
     // <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="PaymentMethods" component={WalletScreen} options={{
+          title: "Wallet",
             // headerRight: () => (
             //     <Button
-            //         title="New"
+            //         title="Add"
             //         onPress={() => {
                         
             //         }}
+            //         style={{paddingRight: 10}}
             //     />
             // )
         }} />

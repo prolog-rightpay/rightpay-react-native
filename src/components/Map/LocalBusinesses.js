@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, Pressable, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import { BusinessItem } from './BusinessItem';
 import { haversineDistance } from '../../math/distance';
@@ -69,11 +69,9 @@ const LocalBusinesses = ({ apiKey, onBusinessPress }) => {
           <Text style={styles.sectionHeader}>{title}</Text>
         </View>
           
-        <Pressable title="Refresh" style={styles.refreshButton} onPress={refreshButtonOnPress}>
-          <TouchableOpacity>
+          <TouchableOpacity style={styles.refreshButton} onPress={refreshButtonOnPress}>
             <Text style={styles.refreshButtonText}>Refresh</Text>
           </TouchableOpacity>
-        </Pressable>
       </View>
       <View style={styles.separator}></View>
       </View>

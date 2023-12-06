@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, View, Text, Button, FlatList, Modal, TextInput, StyleSheet, Pressable, TouchableOpacity } from 'react-native';
+import { SafeAreaView, View, Text, Button, FlatList, Modal, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import LocalBusinesses from './LocalBusinesses';
 import MapComponent from './MapComponent';
 
@@ -12,7 +12,6 @@ const MapScreen = ({ navigation }) => {
   }
 
   const onBusinessPress = business => {
-    console.log("navigating")
     navigation.navigate('Rewards', { data: { business: business } })
 }
 
@@ -30,11 +29,9 @@ const MapScreen = ({ navigation }) => {
                 <Text style={styles.sectionHeader}>Local Businesses</Text>
               </View>
                 
-              <Pressable title="Refresh" style={styles.refreshButton} onPress={refreshButtonOnPress}>
-                <TouchableOpacity>
+                <TouchableOpacity style={styles.refreshButton} onPress={refreshButtonOnPress}>
                   <Text style={styles.refreshButtonText}>Refresh</Text>
                 </TouchableOpacity>
-              </Pressable>
             </View>
             <View style={styles.separator}></View>
           </View>
