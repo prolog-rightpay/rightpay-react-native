@@ -6,7 +6,6 @@ import SignUpScreen from './components/Auth/SignUpScreen';
 import ForgotPasswordScreen from './components/Auth/ForgotPasswordScreen';
 import LoginScreen from './components/Auth/LoginScreen';
 
-
 const Stack = createStackNavigator();
 
 function NoLoginAppNavigation() {

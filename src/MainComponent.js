@@ -1,14 +1,14 @@
 // App.js
-import React, { useContext } from 'react';
 import { SafeAreaView, View, Text } from 'react-native';
 import { SessionContext } from './SessionContext';
 import NoLoginAppNavigation from './NoLoginAppNavigation'
 import AppNavigation from './AppNavigation'
+import { useContext } from 'react';
 
 const MainComponent = () => {
   const context = useContext(SessionContext)
 
-  if (context.databaseSetup) {
+  if (context.databaseConfigured) {
     return (
       <View style={{ flex: 1 }}>
       {context.account != undefined ? (

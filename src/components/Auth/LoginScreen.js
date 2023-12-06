@@ -34,10 +34,6 @@ export default class LoginScreen extends Component {
     }
   };
 
-  forceLogIn = () => {
-    this.context.forceSignin()
-  };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -86,13 +82,6 @@ export default class LoginScreen extends Component {
           <Button
             title="Forgot Password"
             onPress={this.navigateToForgotPassword}
-            style={styles.button}
-          />
-        </View>
-        <View style={styles.buttonSpacing}>
-          <Button
-            title="Force Log In"
-            onPress={this.forceLogIn}
             style={styles.button}
           />
         </View>
