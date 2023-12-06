@@ -1,46 +1,44 @@
-import React, { useState } from 'react';
+import { useIsFocused } from '@react-navigation/native';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, StyleSheet, SectionList, Text, TouchableOpacity, Image } from 'react-native';
-
-const sections = [
-    {
-        id: "root",
-        data: [
-            {
-                id: "aaa",
-                name: "Chase Freedom",
-                issuer: {
-                    name: "Chase"
-                },
-                bin: "123456",
-                color: "#639AFF"
-            },
-            {
-                id: "bbb",
-                name: "American Express Platinum Card",
-                issuer: {
-                    name: "American Express"
-                },
-                bin: "123456",
-                color: "#565656"
-            }
-        ]
-    }
-]
+import { SessionContext } from '../../SessionContext';
 
 const WalletScreen = ({ navigation }) => {
+    const context = useContext(SessionContext)
+    const { apiSession } = context
+
     const [paymentMethods, setPaymentMethods] = useState([]);
+    const [sections, setSections] = useState([{id: "root", data:[]}])
+
+    getData = async () => {
+        const paymentMethods = (await apiSession.getPaymentMethods())
+            .map(method => {
+                method.color = "red"
+                return method
+            })
+        setSections([{
+            id: "root",
+            data: paymentMethods
+        }])
+    }
+
+    isFocused = useIsFocused()
+    useEffect(() => {
+        getData()
+    }, [isFocused])
+
 
     const renderItem = ({ item: paymentMethod }) => {
         return (
             <View style={styles.cellContainer}>
                 <TouchableOpacity style={styles.cellContent}>
                     <View style={{flexShrink:1}}>
-                        <Text style={styles.cellTitle}>{paymentMethod.name}</Text>
-                        <Text style={styles.cellSubtitle}>{paymentMethod.issuer.name}</Text>
+                        <Text style={styles.cellTitle}>{paymentMethod.payment_method.name}</Text>
+                        <Text style={styles.cellSubtitle}>{paymentMethod.payment_method.issuer.name}</Text>
                     </View>
                     <View style={styles.cellTrailer}>
-                        <View style={{backgroundColor: paymentMethod.color, ...styles.binContainer}}>
-                            <Text style={styles.binText}>1234 56</Text>
+                        <View style={{backgroundColor: apiSession.colorForPaymentMethod(paymentMethod), ...styles.binContainer}}>
+                            <Text style={styles.binText}>{paymentMethod.bin}</Text>
                         </View>
                         <View>
                             <Image style={styles.cellArrow} source={require("../../../assets/glyphs/arrow.png")} />
@@ -61,7 +59,7 @@ const WalletScreen = ({ navigation }) => {
         return (
             <View style={styles.cellContainer}>
                 <View style={styles.headerContainer}>
-                    <Text style={styles.headerTitle}>7 cards</Text>
+                    <Text style={styles.headerTitle}>{sections[0].data.length} card{sections[0].data.length == 1 ? "" : "s"}</Text>
                     <TouchableOpacity onPress={newButtonOnPress}>
                         <Text style={styles.newButtonText}>New</Text>
                     </TouchableOpacity>

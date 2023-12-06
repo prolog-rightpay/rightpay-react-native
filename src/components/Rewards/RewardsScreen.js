@@ -1,5 +1,6 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { SafeAreaView, View, Text, SectionList, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { SessionContext } from '../../SessionContext';
  
 var business = {
     // id: "qqq",
@@ -7,22 +8,66 @@ var business = {
     // address: "Business Address"
 }
 
-const rewards = [
-    {
-        paymentMethod: {
-            name: "Chase Freedom",
-            id: "xxx",
-            bin: "234319",
-            color: "#639AFF"
-        },
-        id: "aaa",
-        type: "percentage",
-        percentage: 0.05,
-        locationType: "category",
-        locationCategory: "gas station"
-    },
-    {
-        paymentMethod: {
+// const rewards = [
+//     {
+//         paymentMethod: {
+//             name: "Chase Freedom",
+//             id: "xxx",
+//             bin: "234319",
+//             color: "#639AFF"
+//         },
+//         id: "aaa",
+//         type: "percentage",
+//         percentage: 0.05,
+//         locationType: "category",
+//         locationCategory: "gas station"
+//     },
+//     {
+//         paymentMethod: {
+//             name: "American Express Platinum",
+//             id: "yyy",
+//             bin: "112233",
+//             color: "#565656"
+//         },
+//         id: "bbb",
+//         type: "percentage",
+//         percentage: 0.02,
+//         locationType: "location",
+//         locationName: "Shell"
+//     }
+// ]
+
+// const rewardsSections = [
+//     {
+//         id: "header",
+//         title: "Name of Business",
+//         data: []
+//     },
+//     {
+//         id: "rewards",
+//         title: "Available Rewards",
+//         data: rewards
+//     }
+// ]
+
+const RewardsScreen = ({ navigation, route }) => {
+
+    const context = useContext(SessionContext)
+    const { apiSession } = context
+
+    const { business, rewards: rewardsData } = route.params.data
+
+    // const [business, setBusiness] = useState({})
+    // const [rewardsData, setRewardsData] = useState({})
+    const [rewardsSection, setRewardsSection] = useState([{id: "header", data: []},{id: "rewards", data: []}])
+    
+
+    useEffect(() => {
+        navigation.setOptions({ title: business.name })
+    }, [])
+
+    /*
+            paymentMethod: {
             name: "American Express Platinum",
             id: "yyy",
             bin: "112233",
@@ -33,38 +78,36 @@ const rewards = [
         percentage: 0.02,
         locationType: "location",
         locationName: "Shell"
-    }
-]
-
-const rewardsSections = [
-    {
-        id: "header",
-        title: "Name of Business",
-        data: []
-    },
-    {
-        id: "rewards",
-        title: "Available Rewards",
-        data: rewards
-    }
-]
-
-const RewardsScreen = ({ navigation, route }) => {
-
-    business = route.params.data.business
-    console.log(business)
-    // business = business
+        */
 
     useEffect(() => {
-        navigation.setOptions({ title: business.name })
+        apiSession.getPaymentMethods()
+        .then(paymentMethods => {
+            const rewards = rewardsData.map(reward => {
+                reward.paymentMethod = paymentMethods.find(p => {
+                    return p.payment_method.id == reward.payment_method_id
+                })
+                return reward
+            })
+
+            setRewardsSection([
+                { id: "header", data: []},
+                {id :"rewards", data: rewards}
+            ])
+        })
+        .catch(err => {
+            console.log(err)
+        })
+        
+        // console.log(rewards)
     }, [])
     
     const renderSectionHeader = ({ section: { id } }) => {
         let distance = ""
         if (business.miles < 0.01) {
-            distance = `${business.feet.toFixed(2)} ft`
+            distance = `${business?.feet?.toFixed(2)} ft`
         } else {
-            distance = `${business.miles.toFixed(2)} mi`
+            distance = `${business?.miles?.toFixed(2)} mi`
         }
 
         if (id == "header") {
@@ -74,7 +117,7 @@ const RewardsScreen = ({ navigation, route }) => {
                     <Text style={styles.businessSubtitle}>{ distance }</Text>
                     <ScrollView contentInset={{left: 24, right: 24}} contentOffset={{x: -24}} horizontal={true} showsHorizontalScrollIndicator={false}>
                         <View style={styles.typesContainer}>
-                            {business.types.map(type => (
+                            {business?.types?.map(type => (
                                 <View key={type} style={styles.businessPill}>
                                     <Text style={styles.businessPillText}>{type.replace(/_/g, " ")}</Text>
                                 </View>
@@ -100,11 +143,11 @@ const RewardsScreen = ({ navigation, route }) => {
         return (
             <View>
                 <TouchableOpacity style={styles.cellContainer}>
-                    <Text style={styles.cellTitle}>{reward.paymentMethod.name}</Text>
+                    <Text style={styles.cellTitle}>{reward.paymentMethod.payment_method.name}</Text>
                     <Text style={styles.cellSubtitle}>
-                        <Text style={styles.bold}>{reward.type == "percentage" ? Math.round(reward.percentage * 100) + "%" : "$" + reward.reimburse}</Text> cashback at <Text style={styles.bold}>{reward.locationType == "location" ? reward.locationName : reward.locationCategory}</Text></Text>
-                    <View style={{backgroundColor: reward.paymentMethod.color, ...styles.binContainer}}>
-                        <Text style={styles.binText}>2837 48</Text>
+                        <Text style={styles.bold}>{reward.type == "percentage" ? Math.round(reward.percentage * 100) + "%" : "$" + reward.reimburse}</Text> cashback at <Text style={styles.bold}>{reward.condition.location_type == "location" ? reward.condition.location_name : reward.condition.location_category + "s"}</Text></Text>
+                    <View style={{backgroundColor: apiSession.colorForPaymentMethod(reward.paymentMethod.payment_method), ...styles.binContainer}}>
+                        <Text style={styles.binText}>{reward.paymentMethod.bin}</Text>
                     </View>
                 </TouchableOpacity>
                 <View style={styles.separator}></View>
@@ -115,7 +158,7 @@ const RewardsScreen = ({ navigation, route }) => {
     return (
         <View style={styles.container}>
             <SectionList
-                sections={rewardsSections}
+                sections={rewardsSection}
                 keyExtractor={section => section.id}
                 renderItem={renderItem}
                 renderSectionHeader={renderSectionHeader}

@@ -1,18 +1,112 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react';
 import { SafeAreaView, View, Text, Button, FlatList, Modal, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { SessionContext } from '../../SessionContext';
 import LocalBusinesses from './LocalBusinesses';
 import MapComponent from './MapComponent';
+import { haversineDistance } from '../../math/distance';
 
 const MapScreen = ({ navigation }) => {
 
   const apiKey = 'AIzaSyB64gdwrAFao31Q3XyNETWBqFrgSKwOSHg';
 
-  const refreshButtonOnPress = () => {
+  const refreshButtonOnPress = async () => {
+    try {
+      await fetchData()
+      await searchRewards()
+    } catch (err) {
+      console.log(err)
+    }
+    
+  }
 
+  const [businesses, setBusinesses] = useState([]);
+  const [rewards, setRewards] = useState([])
+  
+  const context = useContext(SessionContext)
+  const { apiSession } = context
+
+  const userLat = 41.1333
+  const userLong = -73.7924
+
+  const removeDuplicates = (list, key) => {
+    const seen = new Set();
+    return list.filter(item => {
+      const value = item[key];
+      if (!seen.has(value)) {
+        seen.add(value);
+        return true;
+      }
+      return false;
+    });
+  };
+
+  const fetchData = async () => {
+    try {
+      const restRes = await axios.get(
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${userLat},${userLong}&types=restaurant&radius=5000&key=${apiKey}`
+      );
+      const storeRes = await axios.get(
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${userLat},${userLong}&types=store&radius=5000&key=${apiKey}`
+      );
+
+      const data = removeDuplicates([...restRes.data.results, ...storeRes.data.results], "name")
+
+      var businesses = data.filter(item => {
+        if (item.types.length == 0) {
+          return false
+        }
+        if (item.opening_hours?.open_now == false) {
+          return false
+        }
+        return true
+      })
+      businesses = businesses.map(business => {
+        if (business.types[0] == "cafe") {
+          business.rewards = 2
+        }
+        if (business.types[0] == "restaurant") {
+          business.rewards = 1
+        }
+        const { lat, lng } = business.geometry.location
+        const distance = haversineDistance(userLat, userLong, lat, lng)
+        business.miles = distance.miles
+        business.feet = distance.feet
+        return business
+      })
+      businesses = businesses.sort((a, b) => { return a.miles - b.miles })
+      setBusinesses(businesses);
+    } catch (error) {
+      console.error('Error fetching businesses:', error);
+    }
+  };
+
+  useEffect(() => {
+      fetchData()
+      .then(async () => {
+        await searchRewards()
+      })
+    
+  }, [apiKey]);
+
+  searchRewards = async () => {
+    const categories = new Set()
+    businesses.forEach(b => categories.add(b.types[0]))
+
+    const categoryRewards = {}
+    Array.from(categories).forEach(c => { categoryRewards[c] = [] })
+
+    await Promise.all(Array.from(categories).map(async type => {
+      const rewards = await apiSession.rewardsSearch("category", type)
+      console.log("searching for rewards for: " + type + ", got " + rewards.length)
+      categoryRewards[type].push(...rewards)
+    }))
+
+    setRewards(categoryRewards)
   }
 
   const onBusinessPress = business => {
-    navigation.navigate('Rewards', { data: { business: business } })
+    navigation.navigate('Rewards', { data: { business: business, rewards: rewards[business.types[0]] } })
 }
 
   return (
@@ -36,7 +130,7 @@ const MapScreen = ({ navigation }) => {
             <View style={styles.separator}></View>
           </View>
 
-          <LocalBusinesses apiKey={apiKey} onBusinessPress={onBusinessPress} />
+          <LocalBusinesses businesses={businesses} rewards={rewards} apiKey={apiKey} onBusinessPress={onBusinessPress} />
         </View>
     </View>
   );

@@ -78,12 +78,6 @@ export const SessionProvider = props => {
         
     }
 
-    forceSignin = () => {
-        const account = new Account()
-        account.email = "x@x.com"
-        setAccount(account)
-    }
-
     signup = async (email, password, firstName, lastName) => {
         await apiSession.signup(email, password, firstName, lastName)
     }
@@ -107,7 +101,6 @@ export const SessionProvider = props => {
                 signin: signin,
                 signup: signup,
                 signout: signout,
-                forceSignin: forceSignin,
 
                 databaseConfigured: databaseConfigured
             }}

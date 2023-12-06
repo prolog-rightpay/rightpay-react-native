@@ -44,7 +44,6 @@ const SelectPaymentMethodScreen = ({ navigation, route }) => {
                 delete item.payment_methods
                 return item
             })
-            console.log(newData)
 
             // now get bin
             getPaymentMethodFromBin(null, bin)

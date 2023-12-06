@@ -1,10 +1,18 @@
-import { React, useState } from 'react';
+import { React, useContext, useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, SectionList, Button } from 'react-native';
+import { SessionContext } from '../../SessionContext';
 import NewCardComponent from './NewCardComponent'
 
 const ConfirmPaymentMethodScreen = ({ navigation, route }) => {
     const data = route.params.data
-    console.log(data)
+
+    const context = useContext(SessionContext)
+    const { apiSession } = context
+
+    addCard = async () => {
+        await apiSession.newPaymentMethod(data.paymentMethod.id, data.bin)
+        navigation.navigate("PaymentMethods", { data: { } })
+    }
 
     return (
         <View style={styles.container}>
@@ -18,13 +26,9 @@ const ConfirmPaymentMethodScreen = ({ navigation, route }) => {
                     bin={data.bin}
                 />
                 </View>
-                <TouchableOpacity style={styles.buttonContainer} onPress={() => {
-                    navigation.navigate("PaymentMethods", { data: { } })
-                }}>
+                <TouchableOpacity style={styles.buttonContainer} onPress={addCard}>
                 <Text style={styles.buttonText}>Add</Text>
             </TouchableOpacity>
-            
-            
             </View>
         </View>
     )
