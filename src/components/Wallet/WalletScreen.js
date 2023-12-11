@@ -55,7 +55,6 @@ const WalletScreen = ({ navigation }) => {
     }
 
     const newButtonOnPress = () => {
-        console.log("navigating")
         navigation.navigate('NewPaymentMethod')
     }
 
@@ -78,7 +77,7 @@ const WalletScreen = ({ navigation }) => {
         
         <SectionList
             sections={sections}
-            keyExtractor={item => item.id}
+            keyExtractor={item => item.id }
             renderItem={renderItem}
             renderSectionHeader={renderSectionHeader}
             stickySectionHeadersEnabled={false}
