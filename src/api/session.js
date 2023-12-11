@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-// export const endpoint = 'https://api.userightpay.com/api/v1'
-export const endpoint = 'http://localhost:3000/api/v1'
+export const endpoint = 'https://api.userightpay.com/api/v1'
+// export const endpoint = 'http://localhost:3000/api/v1'
 
 export class Account {
     /** @type {string} Internal ID of account. */
@@ -111,6 +111,9 @@ export class RightPayAPISession {
     colorForPaymentMethod = (m) => {
         if (m.payment_method) {
             m.id = m.payment_method.id
+            if (m.payment_method.issuer) {
+                m.issuer_id = m.payment_method.issuer.id
+            }
         }
         if (m.id == "a09ef51d-25dd-4a46-95cd-a23cf6a3cb4b") {
             //plat

@@ -89,6 +89,12 @@ const RewardsScreen = ({ navigation, route }) => {
                 })
                 return reward
             })
+            paymentMethods.forEach(method => {
+                var bin = method.bin.split("")
+                bin.splice(4, 0, " ")
+                bin = bin.join("")
+                method.bin = bin
+            })
 
             setRewardsSection([
                 { id: "header", data: []},

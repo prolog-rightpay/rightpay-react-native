@@ -24,6 +24,7 @@ const ConfirmPaymentMethodScreen = ({ navigation, route }) => {
                     name={data.paymentMethod.name}
                     issuer={data.issuer.name}
                     bin={data.bin}
+                    color={apiSession.colorForPaymentMethod(data.paymentMethod)}
                 />
                 </View>
                 <TouchableOpacity style={styles.buttonContainer} onPress={addCard}>

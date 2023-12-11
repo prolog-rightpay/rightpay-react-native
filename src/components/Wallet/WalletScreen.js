@@ -14,6 +14,10 @@ const WalletScreen = ({ navigation }) => {
         const paymentMethods = (await apiSession.getPaymentMethods())
             .map(method => {
                 method.color = "red"
+                var bin = method.bin.split("")
+                bin.splice(4, 0, " ")
+                bin = bin.join("")
+                method.bin = bin
                 return method
             })
         setSections([{
