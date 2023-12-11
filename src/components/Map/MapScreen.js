@@ -6,28 +6,31 @@ import LocalBusinesses from './LocalBusinesses';
 import MapComponent from './MapComponent';
 import { haversineDistance } from '../../math/distance';
 
+import * as Location from 'expo-location'
+
 const MapScreen = ({ navigation }) => {
 
   const apiKey = 'AIzaSyB64gdwrAFao31Q3XyNETWBqFrgSKwOSHg';
 
   const refreshButtonOnPress = async () => {
     try {
-      await fetchData()
-      await searchRewards()
+      await getLocation()
+      // await fetchData()
+      // await searchRewards()
     } catch (err) {
       console.log(err)
     }
     
   }
 
+  const [location, setLocation] = useState(null)
+  const [refreshing, setRefreshing] = useState(null)
+
   const [businesses, setBusinesses] = useState([]);
   const [rewards, setRewards] = useState([])
   
   const context = useContext(SessionContext)
   const { apiSession } = context
-
-  const userLat = 41.1333
-  const userLong = -73.7924
 
   const removeDuplicates = (list, key) => {
     const seen = new Set();
@@ -41,13 +44,34 @@ const MapScreen = ({ navigation }) => {
     });
   };
 
+  const getLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      alert('Permission to access location was denied.');
+      return;
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    setLocation(location)
+  }
+
+  useEffect(() => {
+    (async () => {
+      await getLocation()
+    })()
+  }, [])
+
   const fetchData = async () => {
     try {
+      if (!location) {
+         return
+      }
+      const { longitude: long, latitude: lat } = location.coords
       const restRes = await axios.get(
-        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${userLat},${userLong}&types=restaurant&radius=5000&key=${apiKey}`
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${long}&types=restaurant&radius=5000&key=${apiKey}`
       );
       const storeRes = await axios.get(
-        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${userLat},${userLong}&types=store&radius=5000&key=${apiKey}`
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${long}&types=store&radius=5000&key=${apiKey}`
       );
 
       const data = removeDuplicates([...restRes.data.results, ...storeRes.data.results], "name")
@@ -68,8 +92,8 @@ const MapScreen = ({ navigation }) => {
         if (business.types[0] == "restaurant") {
           business.rewards = 1
         }
-        const { lat, lng } = business.geometry.location
-        const distance = haversineDistance(userLat, userLong, lat, lng)
+        const { lat: latit, lng } = business.geometry.location
+        const distance = haversineDistance(lat, long, latit, lng)
         business.miles = distance.miles
         business.feet = distance.feet
         return business
@@ -82,12 +106,21 @@ const MapScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-      fetchData()
-      .then(async () => {
-        await searchRewards()
-      })
+    (async () => {
+      setRefreshing(true)
+      await fetchData()
+      await searchRewards()
+      setRefreshing(false)
+    })()
+  }, [location])
+
+  // useEffect(() => {
+  //     fetchData()
+  //     .then(async () => {
+  //       await searchRewards()
+  //     })
     
-  }, [apiKey]);
+  // }, [apiKey]);
 
   searchRewards = async () => {
     const categories = new Set()
@@ -98,7 +131,6 @@ const MapScreen = ({ navigation }) => {
 
     await Promise.all(Array.from(categories).map(async type => {
       const rewards = await apiSession.rewardsSearch("category", type)
-      console.log("searching for rewards for: " + type + ", got " + rewards.length)
       categoryRewards[type].push(...rewards)
     }))
 
@@ -112,7 +144,8 @@ const MapScreen = ({ navigation }) => {
   return (
     <View style={styles.root}>
       <View style={styles.map}>
-        <MapComponent />
+        <MapComponent
+          location={location} />
       </View>
 
       <View style={styles.overlay}>
@@ -123,8 +156,8 @@ const MapScreen = ({ navigation }) => {
                 <Text style={styles.sectionHeader}>Local Businesses</Text>
               </View>
                 
-                <TouchableOpacity style={styles.refreshButton} onPress={refreshButtonOnPress}>
-                  <Text style={styles.refreshButtonText}>Refresh</Text>
+                <TouchableOpacity disabled={refreshing} onPress={refreshButtonOnPress}>
+                  <Text style={[styles.refreshButtonText, refreshing ? styles.buttonDisabled : styles.buttonEnabled]}>Refresh</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.separator}></View>
@@ -177,7 +210,13 @@ const styles = StyleSheet.create({
   refreshButtonText: {
     fontSize: 16,
     // fontWeight: "bold",
+    
+  },
+  buttonEnabled: {
     color: "rgba(0, 122, 255, 1.0)"
+  },
+  buttonDisabled: {
+    color: "lightgray"
   },
   sectionHeader: {
     fontWeight: "bold",

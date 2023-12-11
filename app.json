@@ -33,6 +33,14 @@
       "eas": {
         "projectId": "bfd0b375-da22-4c69-ba10-05caecb1fd7b"
       }
-    }
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location to find nearby businesses."
+        }
+      ]
+    ]
   }
 }

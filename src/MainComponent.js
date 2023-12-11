@@ -1,5 +1,5 @@
 // App.js
-import { SafeAreaView, View, Text } from 'react-native';
+import { SafeAreaView, View, Text, StatusBar } from 'react-native';
 import { SessionContext } from './SessionContext';
 import NoLoginAppNavigation from './NoLoginAppNavigation'
 import AppNavigation from './AppNavigation'
