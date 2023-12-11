@@ -28,8 +28,8 @@ const ConfirmPaymentMethodScreen = ({ navigation, route }) => {
                 />
                 </View>
                 <TouchableOpacity style={styles.buttonContainer} onPress={addCard}>
-                <Text style={styles.buttonText}>Add</Text>
-            </TouchableOpacity>
+                    <Text style={styles.buttonText}>Add</Text>
+                </TouchableOpacity>
             </View>
         </View>
     )

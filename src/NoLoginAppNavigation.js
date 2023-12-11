@@ -12,8 +12,8 @@ function NoLoginAppNavigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="SignUp" component={SignUpScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false, title: "Sign In" }} />
+        <Stack.Screen name="SignUp" component={SignUpScreen} options={{ title: "Sign Up" }} />
         <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
       </Stack.Navigator>
     </NavigationContainer>
